@@ -5,6 +5,8 @@
 
 // 4 - Créer une fonction d'affichage, et paramétrer l'affichage des cartes de chaque pays grace à la méthode MAP
 
+// Feature : ajouter les currencies
+
 // 5 - Récupérer ce qui est tapé dans l'input et filtrer (avant le map) les données
 // coutry.name.includes(inputSearch.value);
 
@@ -12,14 +14,56 @@
 
 // 7 - Gérer les 3 boutons pour trier (méthode sort()) les pays
 
+// -----------
+//variables
+// -----------
+const countriesContainer = document.querySelector(".countries-container");
 let countries = [];
 
-const fetchCountries = () => {
-  fetch("https://restcountries.com/v3.1/all?fields=name").then((res) =>
+// -------------
+// functions
+// -------------
+const fetchCountries = async () => {
+  await fetch(
+    "https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,language,region,code,demonym,population,translations",
+  ).then((res) =>
     res.json().then((data) => {
       countries = data;
       console.log(countries);
     }),
   );
 };
-fetchCountries();
+
+const countriesDisplay = async () => {
+  await fetchCountries();
+  countries.length = 12; //display limit during dev
+  countriesContainer.innerHTML = countries
+    .map((country) => {
+      return `
+        <div class="card">
+          <div class="tilt">
+            <div class="img">
+              <img src="${country.flags.png}" alt="${country.flags.alt}">
+            </div>
+          </div>
+          <div class="info">
+            <div class="cat">${country.region}</div>
+            <h2 class="title">${country.name.official}</h2>
+            <p class="desc">Capital City: ${country?.capital ?? "non disponible"}</p>
+            <div class="feats">
+              <span class="feat">${country.population} hab</span>
+              <span class="feat">devise</span>
+            </div>
+            <div class="bottom">
+              <button class="btn">
+                <span>Read more</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+};
+
+countriesDisplay();
