@@ -6,9 +6,9 @@
 // 4 - Créer une fonction d'affichage, et paramétrer l'affichage des cartes de chaque pays grace à la méthode MAP
 
 // Feature : ajouter les currencies
-
+// --------------------------------------------------------------------------------------
 // 5 - Récupérer ce qui est tapé dans l'input et filtrer (avant le map) les données
-// coutry.name.includes(inputSearch.value);
+// country.name.includes(inputSearch.value);
 
 // 6 - Avec la méthode Slice gérer le nombre de pays affichés (inputRange.value)
 
@@ -17,6 +17,9 @@
 // -----------
 //variables
 // -----------
+const inputSearch = document.getElementById("inputSearch");
+const inputRange = document.getElementById("inputRange");
+const rangeValue = document.getElementById("rangeValue");
 const countriesContainer = document.querySelector(".countries-container");
 let countries = [];
 
@@ -29,13 +32,25 @@ const fetchCountries = async () => {
   ).then((res) =>
     res.json().then((data) => {
       countries = data;
-      console.log(countries);
+      // console.log(countries);
     }),
   );
 };
 
 const countriesDisplay = async () => {
   await fetchCountries();
+
+  const filterCountries = (searchValue) => {
+    countries.filter((c) => {
+      c.name.common.toLowerCase().includes(searchValue.toLowerCase());
+    });
+  };
+  inputSearch.addEventListener("input", (e) => {
+    let searchValue = e.target.value;
+    let filtered = filterCountries(searchValue);
+    console.log(filtered);
+  });
+
   countries.length = 12; //display limit during dev
   countriesContainer.innerHTML = countries
     .map((country) => {
@@ -49,7 +64,7 @@ const countriesDisplay = async () => {
           <div class="info">
             <div class="cat">${country.region}</div>
             <h2 class="title">${country.name.official}</h2>
-            <p class="desc">Capital City: ${country?.capital ?? "non disponible"}</p>
+            <p class="desc">Capital City: ${country?.capital ?? "no information"}</p>
             <div class="feats">
               <span class="feat">${country.population} hab</span>
               <span class="feat">devise</span>
