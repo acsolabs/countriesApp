@@ -37,7 +37,7 @@ const countriesDisplay = () => {
         .toLowerCase()
         .includes(inputSearch.value.toLowerCase()),
     )
-    .slice(0, inputRange.value)
+    .slice(0, inputRange.value || 250)
     .map((country) => {
       return ` 
               <div class="card">
@@ -71,4 +71,7 @@ const countriesDisplay = () => {
 window.addEventListener("load", fetchCountries);
 
 inputSearch.addEventListener("input", countriesDisplay);
-inputRange.addEventListener("input", countriesDisplay);
+inputRange.addEventListener("input", () => {
+  rangeValue.innerText = inputRange.value;
+  countriesDisplay();
+});
