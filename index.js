@@ -67,6 +67,4 @@ const countriesDisplay = () => {
 // Events
 window.addEventListener("load", fetchCountries);
 
-inputSearch.addEventListener("input", (e) => {
-  let searchValue = e.target.value;
-});
+inputSearch.addEventListener("input", countriesDisplay);
