@@ -16,6 +16,7 @@ const rangeValue = document.getElementById("rangeValue");
 const minToMax = document.getElementById("minToMax");
 const maxToMin = document.getElementById("maxToMin");
 const alpha = document.getElementById("alpha");
+const btnSort = document.querySelectorAll(".btnSort");
 const countriesContainer = document.querySelector(".countries-container");
 let countries = [];
 let sortMethod = "minToMax";
@@ -88,15 +89,22 @@ inputRange.addEventListener("input", () => {
   rangeValue.innerText = inputRange.value;
   countriesDisplay();
 });
-minToMax.addEventListener("click", () => {
-  sortMethod = "minToMax";
-  countriesDisplay();
-});
-maxToMin.addEventListener("click", () => {
-  sortMethod = "maxToMin";
-  countriesDisplay();
-});
-alpha.addEventListener("click", () => {
-  sortMethod = "alpha";
-  countriesDisplay();
+// minToMax.addEventListener("click", () => {
+//   sortMethod = "minToMax";
+//   countriesDisplay();
+// });
+// maxToMin.addEventListener("click", () => {
+//   sortMethod = "maxToMin";
+//   countriesDisplay();
+// });
+// alpha.addEventListener("click", () => {
+//   sortMethod = "alpha";
+//   countriesDisplay();
+// });
+
+btnSort.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    sortMethod = e.target.id;
+    countriesDisplay();
+  });
 });
