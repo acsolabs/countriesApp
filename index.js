@@ -37,26 +37,29 @@ const countriesDisplay = () => {
         .toLowerCase()
         .includes(inputSearch.value.toLowerCase()),
     )
+    .slice(0, inputRange.value)
     .map((country) => {
       return ` 
-              < class="card">
+              <div class="card">
                 <div class="tilt">
                   <div class="img">
-                  <img src="${country.flags.png}" alt="${country.flags.alt}">
+                    <img src="${country.flags.png}" alt="${country.flags.alt}">
                   </div>
                 </div>
                 <div class="info">
-                  <div class="cat">${country.region}</div>
+                  <div class="cat">${country.region}
+                  </div>
                   <h2 class="title">${country.name.official}</h2>
                   <p class="desc">Capital City: ${country?.capital ?? "no information"}</p>
                   <div class="feats">
-                  <span class="feat">${country.population} hab</span>
-                  <span class="feat">devise</span>
-                </div>
-                <div class="bottom">
-                  <button class="btn">
-                    <span>Read more</span>
-                  </button>
+                    <span class="feat">${country.population} hab</span>
+                    <span class="feat">devise</span>
+                  </div>
+                  <div class="bottom">
+                    <button class="btn">
+                      <span>Read more</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             `;
@@ -68,3 +71,4 @@ const countriesDisplay = () => {
 window.addEventListener("load", fetchCountries);
 
 inputSearch.addEventListener("input", countriesDisplay);
+inputRange.addEventListener("input", countriesDisplay);
