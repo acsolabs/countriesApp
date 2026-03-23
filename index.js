@@ -29,56 +29,44 @@ let countries = [];
 const fetchCountries = async () => {
   await fetch(
     "https://restcountries.com/v3.1/all?fields=name,capital,currencies,flags,language,region,code,demonym,population,translations",
-  ).then((res) =>
-    res.json().then((data) => {
-      countries = data;
-      // console.log(countries);
-    }),
-  );
+  ).then((res) => res.json().then((data) => (countries = data)));
+  countriesDisplay();
 };
 
-const countriesDisplay = async () => {
-  await fetchCountries();
-
-  const filterCountries = (searchValue) => {
-    countries.filter((c) => {
-      c.name.common.toLowerCase().includes(searchValue.toLowerCase());
-    });
-  };
-  inputSearch.addEventListener("input", (e) => {
-    let searchValue = e.target.value;
-    let filtered = filterCountries(searchValue);
-    console.log(filtered);
-  });
-
-  countries.length = 12; //display limit during dev
+const countriesDisplay = () => {
+  // countries.length = 12; //display limit during dev
   countriesContainer.innerHTML = countries
+    .filter((country) => country.name.official.includes(inputSearch.value))
     .map((country) => {
-      return `
-        <div class="card">
-          <div class="tilt">
-            <div class="img">
-              <img src="${country.flags.png}" alt="${country.flags.alt}">
-            </div>
-          </div>
-          <div class="info">
-            <div class="cat">${country.region}</div>
-            <h2 class="title">${country.name.official}</h2>
-            <p class="desc">Capital City: ${country?.capital ?? "no information"}</p>
-            <div class="feats">
-              <span class="feat">${country.population} hab</span>
-              <span class="feat">devise</span>
-            </div>
-            <div class="bottom">
-              <button class="btn">
-                <span>Read more</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
+      return ` <div class="card">
+    <div class="tilt">
+    <div class="img">
+    <img src="${country.flags.png}" alt="${country.flags.alt}">
+    </div>
+    </div>
+    <div class="info">
+    <div class="cat">${country.region}</div>
+    <h2 class="title">${country.name.official}</h2>
+    <p class="desc">Capital City: ${country?.capital ?? "no information"}</p>
+    <div class="feats">
+    <span class="feat">${country.population} hab</span>
+    <span class="feat">devise</span>
+    </div>
+    <div class="bottom">
+    <button class="btn">
+    <span>Read more</span>
+    </button>
+    </div>
+    </div>
+    </div>
+    `;
     })
     .join("");
 };
 
-countriesDisplay();
+// Events
+window.addEventListener("load", fetchCountries);
+
+inputSearch.addEventListener("input", (e) => {
+  let searchValue = e.target.value;
+});
